@@ -1,2 +1,6 @@
 # SmokeWizard
-Autonomous smoker capstone project (TAMU 2025)
+## Autonomous smoker capstone project (TAMU 2025)
+
+This is the codebase for the Smoke Wizard capstone project in (TAMU Spring-Fall 2025, MXET/ESET). Within the parent directory is a PlatformIO project containing all of the relevant code that will be used by a NodeMCU-32S ESP32 microcontroller. The MCU enables the autonomous operation of a meat smoker with features that enable hands-free brisket smoking operations. It is responsible for recording measured sensor data, hosting a webpage for remote monitoring and control, and implementing stable feedback control for smoker chamber temperature. The bulk of this repository is for the webpage functionality. 
+
+Upon initial start-up, the ESP-32 creates a wireless LAN and hosts an HTML webpage that a device (e.g. mobile phone) can connect to to provide the SSID and password of that user's local Wi-Fi network. Then, the ESP-32 hosts another HTML webpage over said Wi-Fi network. The ESP-32 provides its IP address to the user through an LCD display on the smoker, which the user then enters into their web browser to access this new webpage. This webpage allows the user to control the internal temperature of the smoker, frequency of spritzing, and total duration of smoking; and it provides the user with real-time monitoring of all available information on the status of the smoker, including the measured internal temperature profile of the brisket, remaining fluid levels, fuel consumption rate, and remaining weight of fuel pellets. 
