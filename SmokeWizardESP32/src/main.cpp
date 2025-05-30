@@ -1,5 +1,6 @@
 // Load Wi-Fi library
 #include <WiFi.h>
+#include "RMC.h"
 
 const char* ssid = "Frogsaredope";
 const char* password = "sally101";
@@ -92,6 +93,9 @@ void loop(){
             }
 
             // Display the HTML web page
+            client.println(webpageCode);
+            /*
+            // Display the HTML web page
             client.println("<!DOCTYPE html><html>");
             client.println("<head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">");
             client.println("<link rel=\"icon\" href=\"data:,\">");
@@ -115,6 +119,7 @@ void loop(){
               client.println("<p><a href=\"/17/off\"><button class=\"button button2\">OFF</button></a></p>");
             }
             client.println("</body></html>");
+            */
 
             // The HTTP response ends with another blank line
             client.println();
