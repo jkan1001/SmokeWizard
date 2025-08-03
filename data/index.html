@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SMOKE WIZARD</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" type="image/png" href="favicon.png">
+        <link rel="stylesheet" type="text/css" href="style.css">
+    </head>
+    <body>
+        <div class="topnav">
+            <h1>SMOKE WIZARD - REMOTE MONITORING & CONTROL</h1>
+        </div>
+        <div class="content">
+            <div class="card-grid">
+                <div class="card">
+                    <p class="card-title"><i class="fas fa-thermometer-threequarters" style="color:#059e8a;"></i> Smoker Temperature</p>
+                    <p class="reading"><span id="smoker-temperature"></span> &deg;F / &deg;C</p>
+                </div>
+                <div class="card">
+                    <p class="card-title"><i class="fas fa-thermometer-threequarters" style="color:#059e8a;"></i> Internal Meat Temperature</p>
+                    <p class="reading"><span id="meat-temperature"></span>  &deg;F / &deg;C</p>
+                </div>
+                <div class="card">
+                    <p class="card-title"> Humidity</p>
+                    <p class="reading"><span id="humidity"></span> &percnt;</p>
+                </div>
+            </div>
+
+            <div class="ip-info">
+                <p> Smoker's local IP: <span id="local-ip"></span></p>
+                <p> ^Note this down if you want to reconnect later.</p>
+                <p> Share this IP: </p>
+            </div>
+            <div class="spritz-info">
+                <p>Remaining spritz juice: <span id="spritz-juice-percent"></span>%</p>
+                <p>Spritz every </p>
+                <input id="spritz-period"> </input>
+                <p> minutes, and give roughly </p>
+                <input id="spritz-number"> </input>
+                <p> spritzes each time.</p>
+            </div>
+            <div class="fuel-info">
+                <p>Remaining fuel: <span id="fuel-supply-percent"></span>%</p>
+            </div>
+
+            <div id="smoker-chart">
+                <canvas id="SmokerChart" style="width:100%;max-width:700px"></canvas>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script> 
+                <script src="https://cdn.jsdelivr.net/npm/date-fns@4.1.0/cdn.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0"></script>
+                <script>
+                    const options = {
+                        maintainAspectRatio: true,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: "Smoker Temperature over Time"
+                            },
+                            legend: {
+                                display: true
+                            }
+                        },
+                        scales: {
+                            x: {
+                                type: 'time',
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: "Temperature (\u00b0C)"
+                                }
+                            }
+                        }
+                    }
+
+                    const data = {
+                        datasets: [
+                            {
+                                label: "Target Temperature",
+                                data: [
+                                        {x: '2025-08-03T17:08:00.00', y: 25},
+                                        {x: '2025-08-03T18:08:00.00', y: 100},
+                                        {x: '2025-08-03T19:08:00.00', y: 101},
+                                        {x: '2025-08-03T23:08:00.00', y: 102},
+                                        {x: '2025-08-04T01:08:00.00', y: 50},
+                                    ],
+                                borderColor: "green"
+                            },
+                            {
+                                label: "Measured Temperature",
+                                data: [
+                                    {x: '2025-08-03T17:08:00.00', y: 23},
+                                    {x: '2025-08-03T18:08:00.00', y: 90},
+                                    {x: '2025-08-03T19:08:00.00', y: 91}
+                                ],
+                                borderColor: "red"
+                            }
+                    ]
+                    }
+
+                    const ctx = document.querySelector('#SmokerChart');
+                    const myChart = new Chart(
+                        ctx,
+                        {
+                            type: 'line',
+                            data,
+                            options
+                        }
+                    )
+                </script>
+            </div>
+        </div>
+        <script src="script.js"></script>
+    </body>
+</html>
