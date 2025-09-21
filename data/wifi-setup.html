@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SMOKE WIZARD</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" type="image/png" href="favicon.png">
+        <link rel="stylesheet" type="text/css" href="style.css">
+    </head>
+    <body>
+        <form id="wifi-setup-form" action="credPost.html" method="POST">
+
+            <div>
+                <label for="ssid">SSID:</label>
+                <input type="text" id="ssid" name="ssid" placeholder="your wi-fi network name" required>
+            </div>
+
+            <br>
+
+            <div>
+                <label for="pass">Password:</label>
+                <input type="password" id="pass" name="pass" maxlength="18" required>
+            </div>
+
+            <br>
+
+            <div>
+                <input type="reset">
+            </div>
+
+            <br>
+
+            <div>
+                <input type="submit">
+            </div>
+            
+        </form>
+        
+        <script src="wifi-script.js"></script>
+    </body>
+</html>
