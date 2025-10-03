@@ -90,6 +90,9 @@ bool initWiFiSTA(char *ss, char *pw) {
     delay(1000);
     wifiTimeOut = ((millis() - wifiLastTime) > maxWifiDelay);
   }
+  if (wifiTimeOut) {
+    WiFi.disconnect();
+  }
   return !(wifiTimeOut);
 }
 
