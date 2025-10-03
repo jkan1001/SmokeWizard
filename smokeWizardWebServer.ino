@@ -49,7 +49,6 @@ bool wifiTimeOut = false;
 // Create sensor dummy variables
 int mySmokerTemp = 25;
 int myMeatTemp = 18;
-int myHumidity = 100;
 int myJuice = 100;
 int myFuel = 100;
 
@@ -58,12 +57,10 @@ int myFuel = 100;
 String getSensorReadings(){
   readings["smoker-temperature"] = String(mySmokerTemp);
   readings["meat-temperature"] = String(myMeatTemp);
-  readings["humidity"] =  String(myHumidity);
   readings["spritz-juice-percent"] =  String(myJuice);
   readings["fuel-supply-percent"] =  String(myFuel);
   mySmokerTemp = mySmokerTemp + 1;
   myMeatTemp = myMeatTemp + 1;
-  myHumidity = myHumidity + 1;
   myJuice = myJuice + 1;
   myFuel = myFuel + 1;
   String jsonString = JSON.stringify(readings);
