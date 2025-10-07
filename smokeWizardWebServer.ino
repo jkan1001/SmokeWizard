@@ -12,8 +12,18 @@
 #include <Arduino_JSON.h>
 #include <string.h>
 #include <Preferences.h>
+#include <SPI.h>
+#include "Adafruit_MAX31855.h"
+
 // #include <Adafruit_BME280.h>
 // #include <Adafruit_Sensor.h>
+
+// thermocouple pins
+#define MAXDO   19
+#define MAXCLK  18
+#define MAXCS1   5
+#define MAXCS2   4
+
 
 // Replace with your network credentials
 Preferences preferences;
@@ -52,15 +62,49 @@ int myMeatTemp = 18;
 int myJuice = 100;
 int myFuel = 100;
 
+// initialize the thermocouples with hardware SPI (VSPI)
+Adafruit_MAX31855 thermocouple1(MAXCLK, MAXCS1, MAXDO);
+Adafruit_MAX31855 thermocouple2(MAXCLK, MAXCS2, MAXDO);
+
+
 
 // Get Sensor Readings and return JSON object
 String getSensorReadings(){
-  readings["smoker-temperature"] = String(mySmokerTemp);
-  readings["meat-temperature"] = String(myMeatTemp);
+
+  Serial.print("Internal Temp = ");
+  Serial.println(thermocouple1.readInternal());
+
+  double c1 = thermocouple1.readCelsius();
+  if (isnan(c1)) {
+    Serial.println("Thermocouple 1 - fault(s) detected!");
+    uint8_t e = thermocouple1.readError();
+    if (e & MAX31855_FAULT_OPEN) Serial.println("FAULT: Thermocouple 1 is open - no connections.");
+    if (e & MAX31855_FAULT_SHORT_GND) Serial.println("FAULT: Thermocouple 1 is short-circuited to GND.");
+    if (e & MAX31855_FAULT_SHORT_VCC) Serial.println("FAULT: Thermocouple 1 is short-circuited to VCC.");
+  } else {
+    Serial.print("C = ");
+    Serial.println(c1);
+  }
+
+  double c2 = thermocouple2.readCelsius();
+  if (isnan(c2)) {
+    Serial.println("Thermocouple 2 - fault(s) detected!");
+    uint8_t e = thermocouple2.readError();
+    if (e & MAX31855_FAULT_OPEN) Serial.println("FAULT: Thermocouple 2 is open - no connections.");
+    if (e & MAX31855_FAULT_SHORT_GND) Serial.println("FAULT: Thermocouple 2 is short-circuited to GND.");
+    if (e & MAX31855_FAULT_SHORT_VCC) Serial.println("FAULT: Thermocouple 2 is short-circuited to VCC.");
+  } else {
+    Serial.print("C = ");
+    Serial.println(c2);
+  }
+
+
+  readings["smoker-temperature"] = String(c1);
+  readings["meat-temperature"] = String(c2);
   readings["spritz-juice-percent"] =  String(myJuice);
   readings["fuel-supply-percent"] =  String(myFuel);
-  mySmokerTemp = mySmokerTemp + 1;
-  myMeatTemp = myMeatTemp + 1;
+  // mySmokerTemp = mySmokerTemp + 1;
+  // myMeatTemp = myMeatTemp + 1;
   myJuice = myJuice + 1;
   myFuel = myFuel + 1;
   String jsonString = JSON.stringify(readings);
@@ -194,6 +238,13 @@ void setup() {
   delay(3000); // wait for serial monitor to start completely
   Serial.begin(115200);
 
+  // initialize thermocouples
+  Serial.print("Initializing sensor...");
+  if (!thermocouple1.begin()) {
+    Serial.println("ERROR.");
+    while (1) delay(10);
+  }
+
   // set up file system
   initLittleFS();
 
@@ -228,14 +279,12 @@ void setup() {
   } else {
     Serial.println("\nSaved SSID: ");
     Serial.print(ssid);
-    Serial.println("\nSaved password: ");
-    Serial.print(password);
+    // Serial.println("\nSaved password: ");
+    // Serial.print(password);
   }
 
   // try to connect with existing credentials:
-  if (!initWiFiSTA(ssid, password)) {
-    // Serial.println("Connected. Testing wifi-setup page...");
-    
+  if (!initWiFiSTA(ssid, password)) {    
     Serial.println("Failed to connect. Creating access point...");
     WiFi.disconnect(true, false); // WiFi.begin() was started earlier and never stopped; 
     // it has to be stopped before trying again or it will give the "wifi:sta cannot set config" error
@@ -245,6 +294,7 @@ void setup() {
     myFuncPointer = handleWiFiSetupPage;
     
   } else {
+    Serial.println("Connected successfully!.  ");
     wificonnected = true;
     initWebSocket();
     myFuncPointer = handleMainPage;
