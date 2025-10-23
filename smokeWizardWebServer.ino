@@ -22,8 +22,10 @@
 #define MAXDO   19
 #define MAXCLK  18
 #define MAXCS1   5
-#define MAXCS2   4
+#define MAXCS2   17
 
+// fan motor PWM pin
+#define FANPWM 15
 
 // Replace with your network credentials
 Preferences preferences;
@@ -237,6 +239,10 @@ void initWebSocket() {
 void setup() {
   delay(3000); // wait for serial monitor to start completely
   Serial.begin(115200);
+
+  // generate test PWM for fan motor
+  // pinMode(FANPWM, OUTPUT);
+  // analogWrite(FANPWM, 100);
 
   // initialize thermocouples
   Serial.print("Initializing sensor...");
