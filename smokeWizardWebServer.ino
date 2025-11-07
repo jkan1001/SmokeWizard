@@ -6,11 +6,9 @@
 *********/
 #include <Arduino.h>
 #include <WiFi.h>
-#include <AsyncTCP.h>
 #include <ESPAsyncWebServer.h>
 #include "LittleFS.h"
 #include <Arduino_JSON.h>
-#include <string.h>
 #include <Preferences.h>
 #include <SPI.h>
 #include "Adafruit_MAX31855.h"
@@ -19,10 +17,10 @@
 // #include <Adafruit_Sensor.h>
 
 // thermocouple pins
-#define MAXDO   19
-#define MAXCLK  18
-#define MAXCS1   5
-#define MAXCS2   17
+#define MAXDO     19
+#define MAXCLK    18
+#define MAXCS1    5
+#define MAXCS2    17
 
 // fan motor PWM pin
 #define FANPWM 15
