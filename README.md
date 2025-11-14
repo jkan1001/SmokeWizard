@@ -1,4 +1,4 @@
-# SmokeWizard
+# SmokeWizard (WEBSITE COMPONENT - OLD)
 ## Autonomous smoker capstone project (TAMU 2025)
 
 This is the codebase for the Smoke Wizard capstone project in (TAMU Spring-Fall 2025, MXET/ESET). The ESP32 automatically controls a meat smoker for smoking brisket. It is responsible for recording measured sensor data, hosting a webpage for remote monitoring and control, and implementing stable feedback control for smoker chamber temperature. 
